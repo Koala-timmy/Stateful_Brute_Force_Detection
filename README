@@ -1,0 +1,117 @@
+# Brute Force Login Detector (Python)
+
+## Overview
+This Python program analyzes login logs to detect potential brute force attacks. It monitors consecutive failed login attempts for each user and classifies the activity based on predefined risk thresholds.
+
+The project demonstrates a simple rule-based detection system commonly used in cybersecurity to identify suspicious authentication behavior.
+
+## Features
+- Reads login records from a text file.
+- Tracks consecutive failed login attempts for each user.
+- Resets the failure streak after a successful login.
+- Identifies the longest consecutive failure streak.
+- Classifies users as **Normal**, **Low Suspicion**, or **Suspicious**.
+- Uses configurable thresholds for detection.
+- Handles missing log files using exception handling.
+
+## Detection Logic
+
+The program classifies users based on their longest streak of consecutive failed login attempts.
+
+| Failed Login Streak | Classification |
+|---------------------|----------------|
+| 0–2                 | Normal |
+| 3–4                 | Low Suspicion |
+| 5 or more           | Suspicious |
+
+A successful login resets the user's current failure streak.
+
+## How It Works
+
+1. The program reads login records from `Logs.txt`.
+2. Each log entry is parsed to determine:
+   - Username
+   - Login result (SUCCESS or FAILED)
+3. For each user:
+   - Failed logins increase the current failure streak.
+   - Successful logins reset the current failure streak.
+   - The longest failure streak is recorded.
+4. The detection engine compares each user's longest streak against predefined thresholds.
+5. The program displays a risk assessment for every user.
+
+## Functions
+
+### `read_file(file_path)`
+Reads all log entries from the specified log file.
+
+**Responsibilities:**
+- Opens the log file.
+- Reads every line into memory.
+- Returns the contents as a list.
+- Handles `FileNotFoundError` if the file does not exist.
+
+### `process_logs(log_content)`
+Processes login events and tracks user behavior.
+
+**Responsibilities:**
+- Extracts usernames from each log.
+- Tracks consecutive failed login attempts.
+- Resets failure streaks after successful logins.
+- Records each user's longest failure streak.
+- Returns a dictionary containing user statistics.
+
+### `decision_maker(data)`
+Evaluates user activity against detection thresholds.
+
+**Responsibilities:**
+- Compares failure streaks with predefined thresholds.
+- Assigns a security status.
+- Displays a summary of the analysis.
+
+## Example Log File
+
+```text
+09:15 FAILED USER Alice
+09:16 FAILED USER Alice
+09:17 FAILED USER Alice
+09:18 SUCCESS Alice
+09:25 FAILED USER Bob
+09:26 FAILED USER Bob
+09:27 FAILED USER Bob
+09:28 FAILED USER Bob
+09:29 FAILED USER Bob
+```
+
+## Example Output
+
+```text
+======== Brute Force Detector ========
+
+Username: Alice
+Status: Low Suspicion
+Reason: Low failure count
+======================================
+
+Username: Bob
+Status: Suspicious
+Reason: High failure count
+======================================
+```
+
+## Requirements
+- Python 3.x
+- A log file named `Logs.txt` containing authentication records.
+
+## Skills Demonstrated
+- File handling
+- Exception handling
+- Dictionaries
+- Functions
+- Loops
+- Conditional statements
+- Log parsing
+- Rule-based threat detection
+- Basic cybersecurity concepts
+
+## Author
+Created as a beginner Python cybersecurity project to practice file handling, log analysis, and implementing a simple rule-based brute force detection system.
